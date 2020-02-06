@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 @app.route('/info/<username>')
 def getInfo(username):
-	try:
-		if request.args['key']==config.KEY:
+    try:
+        if request.args['key']==config.KEY:
 			ldap.set_option(ldap.OPT_REFERRALS,0)
 
 			# Open a connection
@@ -31,7 +31,7 @@ def getInfo(username):
 				returnValue['faculty'] = False
 			else:
 				returnValue['success'] = True
-				name                   = result[0][1]['displayName'][0].strip()
+				name       = result[0][1]['displayName'][0].strip()
 				if 'OU=FACULTY' in facultyInfo:
 					returnValue['faculty'] = True
 					returnValue['name']    = name
@@ -64,9 +64,9 @@ def getInfo(username):
 						state  = details[5].strip(' ')
 						phone  = result[0][1]['telephoneNumber'][0]
 
-					returnValue['name']        = name
+					returnValue['name']    = name
 					returnValue['course']      = course
-					returnValue['dept']        = dept
+					returnValue['dept']    = dept
 					returnValue['state']       = state
 					returnValue['phone']       = phone
 					returnValue['faculty']     = False
