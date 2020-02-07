@@ -27,7 +27,6 @@ def getInfo(username):
 			ldap_base = "dc=octa,dc=edu"
 			query = "(cn="+username+")"
 			result = l.search_s(ldap_base, ldap.SCOPE_SUBTREE, query)
-
 			returnValue = {}
 			facultyInfo = result[0][0]
 			details = result[0][1]['description'][0].strip().split('-')
@@ -66,7 +65,7 @@ def getInfo(username):
 						dept = details[1].strip(' ')
 						state = details[4].strip(' ')
 						phone = details[5].strip(' ').strip('ph:')
-					if year[5] == '8':
+					if year[5] == '8' or year[5]=='9':
 						course = details[0].strip('.')
 						dept = details[1].strip(' ')
 						state = details[5].strip(' ')
@@ -78,10 +77,10 @@ def getInfo(username):
 					returnValue['state'] = state
 					returnValue['phone'] = phone
 					returnValue['faculty'] = False
-					cache.insert(returnValue)
+					cache.insert_one(returnValue)
+					del returnValue["_id"]
 			# Its nice to the server to disconnect and free resources when done
 			l.unbind_s()
-
 			return jsonify(returnValue)
 		else:
 			return "Please enter the key as param in the req"
